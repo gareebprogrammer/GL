@@ -8,10 +8,10 @@ class Window {
 
 private:
     GLFWwindow *m_window;
-    int m_width,m_height;
+    i32 m_width,m_height;
 
 public:
-    bool create_window(int width,int height,const char *title);
+    bool create_window(i32 width,i32 height,const char *title);
     bool load_gl();
 
     inline void set_gl_framebuffer_size_callback(GLFWframebuffersizefun func) {
@@ -22,7 +22,7 @@ public:
         glfwMakeContextCurrent(m_window);
     }
 
-    inline void get_window_size(u32 *width,u32 *height) {
+    inline void get_window_size(i32 *width,i32 *height) {
         glfwGetWindowSize(m_window,&m_width,&m_height);
         *width = m_width;
         *height = m_height;

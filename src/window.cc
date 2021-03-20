@@ -1,8 +1,8 @@
 #include <glad/glad.h>
 #include "window.h"
 #include <stdio.h>
-    
-bool Window::create_window(int width,int height,const char *title) {
+
+bool Window::create_window(i32 width,i32 height,const char *title) {
     const u32 res = glfwInit();
     if(!res) {
         return false;
