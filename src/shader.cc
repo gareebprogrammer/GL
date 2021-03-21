@@ -1,6 +1,6 @@
 #include "shader.h"
 #include "utils.h"
-#include <stdio.h>
+#include <spdlog/spdlog.h>
 #include <malloc.h>
 #include <string>
 
@@ -11,14 +11,14 @@ void inline check_shader_compile_error(u32 shader,std::string type) {
         glGetShaderiv(shader,GL_COMPILE_STATUS,&success);
         if(!success) {
             glGetShaderInfoLog(shader,1024,NULL,infoLog);
-            printf("ERROR: %s shader compilation failed : %s\n",type.c_str(),infoLog);
+            spdlog::info("ERROR: {} shader compilation failed : {}\n",type.c_str(),infoLog);
         }
     }else {
         glGetProgramiv(shader, GL_LINK_STATUS, &success);
         if(!success)
         {
             glGetProgramInfoLog(shader, 1024, NULL, infoLog);
-            printf("ERROR: %s linking failed : %s\n", type.c_str(),infoLog);
+            spdlog::info("ERROR: {} linking failed : {}\n", type.c_str(),infoLog);
         }
     }
 }
