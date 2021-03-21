@@ -2,14 +2,20 @@
 #include "window.h"
 #include <spdlog/spdlog.h>
 
-void processInput(GLFWwindow *window)
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) { 
         spdlog::info("closeing window you pressed ESC!");
         glfwSetWindowShouldClose(window, true);
+    }else if (key == GLFW_KEY_L && action == GLFW_PRESS) { 
+        spdlog::info("Toogle gl draw mode");
+        glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+    }if (key == GLFW_KEY_F && action == GLFW_PRESS) { 
+        spdlog::info("Toogle gl draw mode");
+        glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
     }
-        
 }
+
 
 void framebuffer_size_callback(GLFWwindow* window, i32 width, i32 height)
 {
@@ -64,23 +70,24 @@ int main(int argc,const char **argv) {
     // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
 
+    glfwSetKeyCallback(win.get_window_handle(),key_callback);
+
     while(win.is_window_closed()) {
 
-        // input //
-        processInput(win.get_window_handle());
-
-        // buffer swap //
-        win.swap_buffers();
-        
-        // event polling //
-        win.poll();
-
         // rendering //
+        glClear(GL_COLOR_BUFFER_BIT);
         s.apply();
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 6);
+
+        // buffer swap //
+        win.swap_buffers();
+
+        // event polling //
+        win.poll();
+        
     }
-    
+
     win.close_window();
     return 0;
 }
