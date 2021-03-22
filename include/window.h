@@ -51,7 +51,10 @@ public:
     inline void poll() {
         glfwPollEvents();
     }
-
+    
+    inline void set_key_callback(GLFWkeyfun func) {
+        glfwSetKeyCallback(m_window,func);
+    }
     inline void close_window() {
         glfwDestroyWindow(m_window);
     }
