@@ -66,6 +66,12 @@ int main(int argc,const char **argv) {
     }
     win.load_gl();
     win.set_gl_framebuffer_size_callback(framebuffer_size_callback);
+    
+    const GLubyte *vendor = glGetString(GL_RENDERER);
+    int nrAttributes;
+    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes); 
+    spdlog::info("Maximum {} number of vertex attributes supported by {}",nrAttributes,vendor);
+
 
     Shader s1;
     Shader s2;
@@ -96,7 +102,7 @@ int main(int argc,const char **argv) {
 
     // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
-    
+
     win.set_key_callback(key_callback);
 
     while(win.is_window_closed()) {
