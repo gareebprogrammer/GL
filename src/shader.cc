@@ -75,3 +75,23 @@ bool Shader::load_shader(const char *vert_path,const char *frag_path) {
     
     return true;
 }
+
+void Shader::set_uniform_1f(const char *location,GLfloat v0) {
+    int shader_location = glGetUniformLocation(m_shader_id, location);
+    glUniform1f(shader_location,v0);
+}
+
+void Shader::set_uniform_2f(const char *location,GLfloat v0,GLfloat v1) {
+    int shader_location = glGetUniformLocation(m_shader_id, location);
+    glUniform2f(shader_location,v0,v1);
+}
+
+void Shader::set_uniform_3f(const char *location,GLfloat v0,GLfloat v1,GLfloat v2) {
+    int shader_location = glGetUniformLocation(m_shader_id, location);
+    glUniform3f(shader_location,v0,v1,v2);
+}
+
+void Shader::set_uniform_4f(const char *location,GLfloat v0,GLfloat v1,GLfloat v2,GLfloat v3) {
+    int shader_location = glGetUniformLocation(m_shader_id, location);
+    glUniform4f(shader_location,v0,v1,v2,v3);
+}

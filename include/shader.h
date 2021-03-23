@@ -20,7 +20,11 @@ public:
         return m_shader_id;
     }
 
-};
+    void set_uniform_1f(const char *location,GLfloat v0);
+    void set_uniform_2f(const char *location,GLfloat v0,GLfloat v1);
+    void set_uniform_3f(const char *location,GLfloat v0,GLfloat v1,GLfloat v2);
+    void set_uniform_4f(const char *location,GLfloat v0,GLfloat v1,GLfloat v2,GLfloat v3);
 
+};
 
 #endif

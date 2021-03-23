@@ -1,6 +1,7 @@
 #include "shader.h"
 #include "window.h"
 #include <spdlog/spdlog.h>
+#include <math.h>
 
 static bool gl_poly_mode = true;
 
@@ -43,20 +44,26 @@ float vertices[] = {
         -0.9f, -0.5f, 0.0f,  // left 
         -0.0f, -0.5f, 0.0f,  // right
         -0.45f, 0.5f, 0.0f,  // top  
-    }; 
+}; 
 
 float vertices2 [] = {
-        // second triangle
-        0.0f, -0.5f, 0.0f,  // left
-        0.9f, -0.5f, 0.0f,  // right
-        0.45f, 0.5f, 0.0f   // top
+        // second triangle  // colors
+        0.0f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f, // left 
+        0.9f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f, // right
+        0.45f, 0.5f, 0.0f,  0.0f, 0.0f, 1.0f  // top 
     };
 
-// unsigned int indices[] = {  // note that we start from 0!
-//     0, 1, 3,   // first triangle
-//     1, 2, 3    // second triangle
-// }; 
+// float vertices2[] = {
+//     // positions         // colors
+//      0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+//     -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+//      0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
+// };
 
+unsigned int indices[] = {  // note that we start from 0!
+     0, 1, 3,   // first triangle
+     1, 2, 3    // second triangle
+}; 
 
 int main(int argc,const char **argv) {
 
@@ -65,24 +72,24 @@ int main(int argc,const char **argv) {
         return 0xdead;
     }
     win.load_gl();
-    win.set_gl_framebuffer_size_callback(framebuffer_size_callback);
+    win.set_gl_framebuffer_size_callback(framebuffer_size_callback);    
+    win.set_key_callback(key_callback);
     
+
     const GLubyte *vendor = glGetString(GL_RENDERER);
     int nrAttributes;
     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes); 
     spdlog::info("Maximum {} number of vertex attributes supported by {}",nrAttributes,vendor);
-
 
     Shader s1;
     Shader s2;
     s1.load_shader("shaders/vertv1.glsl","shaders/fragv1.glsl");
     s2.load_shader("shaders/vertv2.glsl","shaders/fragv2.glsl");
 
-    u32 VBO[2], VAO[2];
-    // , EBO;
+    u32 VBO[2], VAO[2],EBO[2];
     glGenVertexArrays(2, VAO);
     glGenBuffers(2, VBO);
-    //glGenBuffers(1, &EBO);
+    glGenBuffers(2, EBO);
 
     // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
     glBindVertexArray(VAO[0]);
@@ -90,29 +97,38 @@ int main(int argc,const char **argv) {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-
-    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO[0]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     glBindVertexArray(VAO[1]);
     glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    // positions //
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+    // colors
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3* sizeof(float)));
+    glEnableVertexAttribArray(1);
 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO[1]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
-
-    win.set_key_callback(key_callback);
-
+    
     while(win.is_window_closed()) {
 
         // rendering //
+        float timeValue = glfwGetTime();
+        float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
         glClear(GL_COLOR_BUFFER_BIT);
+
         s1.apply();
+        s1.set_uniform_4f("ourColor",0.0f, greenValue, 0.0f, 1.0f);
         glBindVertexArray(VAO[0]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
+        
         s2.apply();
+        s2.set_uniform_1f("xoffset",0.1f);
         glBindVertexArray(VAO[1]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         // buffer swap //

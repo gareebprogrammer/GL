@@ -18,9 +18,9 @@ file(GLOB SOURCES
     src/main.cc
     )
 
+message("Copying shader files")
 file( COPY ${CMAKE_CURRENT_SOURCE_DIR}/shaders DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
 
 add_executable(gl ${SOURCES} ${OPENGL_INCLUDE_DIRS})
-
 
 target_link_libraries(gl glfw glad ${OPENGL_LIBRARIES} spdlog::spdlog_header_only)
