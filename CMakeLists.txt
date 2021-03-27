@@ -9,8 +9,8 @@ endif()
 add_subdirectory(external/spdlog)
 add_subdirectory(external/glad)
 add_subdirectory(external/glfw3)
-find_package(OpenGL REQUIRED)
 
+find_package(OpenGL REQUIRED)
 
 include_directories(include)
 
@@ -19,9 +19,13 @@ file(GLOB SOURCES
     src/utils.cc
     src/shader.cc
     src/glrenderer.cc
+    src/texture.cc
     src/main.cc
     )
     
+message("Copying texture files")
+file( COPY ${CMAKE_CURRENT_SOURCE_DIR}/textures DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
+
 message("Copying shader files")
 file( COPY ${CMAKE_CURRENT_SOURCE_DIR}/shaders DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
 
