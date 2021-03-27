@@ -64,7 +64,7 @@ bool Shader::load_shader(const char *vert_path,const char *frag_path) {
     glAttachShader(m_shader_id, fragment_shader);
     glLinkProgram(m_shader_id);
     check_shader_compile_error(m_shader_id, "PROGRAM");
-
+   
     // delete shaders //
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
