@@ -26,7 +26,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void framebuffer_size_callback(GLFWwindow* window, i32 width, i32 height)
 {
     glViewport(0, 0, width, height);
-} 
+}
 
 // float vertices[] = {
 //     // first triangle
@@ -66,7 +66,7 @@ unsigned int indices[] = {  // note that we start from 0!
 }; 
 
 int main(int argc,const char **argv) {
-
+  
     Window win;
     if(!win.create_window(800,800,"Learn GL")) {
         return 0xdead;
@@ -91,7 +91,8 @@ int main(int argc,const char **argv) {
     glGenBuffers(2, VBO);
     glGenBuffers(2, EBO);
 
-    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+    // bind the Vertex Array Object first, then bind and set vertex buffer(s),
+    //and then configure vertex attributes(s).
     glBindVertexArray(VAO[0]);
     glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);

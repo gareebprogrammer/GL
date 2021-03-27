@@ -11,35 +11,45 @@ i32 get_file_size(const char *file_path) {
         return file_stat.st_size;
     }
 }
-
 #endif
 
-#if _WIN32 
-    #error Unimplemented
+#if _WIN32
+#include <windows.h>
+
+i32 get_file_size(const char *file_path) {
+  WIN32_FILE_ATTRIBUTE_DATA    fileInfo;
+  if(GetFileAttributesEx(file_path, GetFileExInfoStandard, &fileInfo))
+    {
+      i32 nSize = (i32)fileInfo.nFileSizeLow;
+        return nSize;
+    }else {
+       return -1;
+    } 
+}
 #endif
 
-#include <stdio.h>
+#include<spdlog/spdlog.h>
 #include <malloc.h>
 
 char *load_file_into_ram(const char *file_path,i32 file_size) { 
     if(file_size == -1) {
-        printf("Cannot get file size: %s\n", file_path);
+        spdlog::error("Cannot get file size: {}", file_path);
         return nullptr;
     }   
     FILE *file = fopen(file_path,"rb");
     if(!file) {
-        printf("File loading failed : %s\n", file_path);
+        spdlog::error("File loading failed : {}", file_path);
         return nullptr;
     }
 
-    char *file_buf = (char *)malloc(file_size * sizeof(char)); 
+    char *file_buf = (char *)malloc(file_size+1 * sizeof(char)); 
     if(!file_buf) {
-        printf("File allocation failed %s\n",file_path);
+        spdlog::error("File allocation failed : {}",file_path);
         return nullptr;
     }
-    i32 read_count = fread(file_buf,file_size,1,file);
+    size_t read_count = fread(file_buf,file_size,1,file);
     if(read_count != 1) {
-        printf("File reading failed %s\n", file_path);
+      spdlog::error("File reading failed : {}", file_path);
         free(file_buf);
         return nullptr;
     }
