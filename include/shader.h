@@ -24,7 +24,16 @@ public:
     void set_uniform_2f(const char *location,GLfloat v0,GLfloat v1);
     void set_uniform_3f(const char *location,GLfloat v0,GLfloat v1,GLfloat v2);
     void set_uniform_4f(const char *location,GLfloat v0,GLfloat v1,GLfloat v2,GLfloat v3);
-
+    
+    void set_uniform_1i(const char *location,GLint v0);
+    void set_uniform_2i(const char *location,GLint v0,GLint v1);
+    void set_uniform_3i(const char *location,GLint v0,GLint v1,GLint v2);
+    void set_uniform_4i(const char *location,GLint v0,GLint v1,GLint v2,GLint v3);
+    
+    void set_uniform_1ui(const char *location,GLuint v0);
+    void set_uniform_2ui(const char *location,GLuint v0,GLuint v1);
+    void set_uniform_3ui(const char *location,GLuint v0,GLuint v1,GLuint v2);
+    void set_uniform_4ui(const char *location,GLuint v0,GLuint v1,GLuint v2,GLuint v3);
 };
 
 #endif

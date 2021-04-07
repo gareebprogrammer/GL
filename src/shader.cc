@@ -76,6 +76,7 @@ bool Shader::load_shader(const char *vert_path,const char *frag_path) {
     return true;
 }
 
+
 void Shader::set_uniform_1f(const char *location,GLfloat v0) {
     int shader_location = glGetUniformLocation(m_shader_id, location);
     glUniform1f(shader_location,v0);
@@ -94,4 +95,46 @@ void Shader::set_uniform_3f(const char *location,GLfloat v0,GLfloat v1,GLfloat v
 void Shader::set_uniform_4f(const char *location,GLfloat v0,GLfloat v1,GLfloat v2,GLfloat v3) {
     int shader_location = glGetUniformLocation(m_shader_id, location);
     glUniform4f(shader_location,v0,v1,v2,v3);
+}
+
+
+void Shader::set_uniform_1i(const char *location,GLint v0) { 
+    int shader_location = glGetUniformLocation(m_shader_id, location);
+    glUniform1i(shader_location,v0);
+}
+
+void Shader::set_uniform_2i(const char *location,GLint v0,GLint v1) {
+    int shader_location = glGetUniformLocation(m_shader_id, location);
+    glUniform2i(shader_location,v0,v1);
+}
+
+void Shader::set_uniform_3i(const char *location,GLint v0,GLint v1,GLint v2) {
+    int shader_location = glGetUniformLocation(m_shader_id, location);
+    glUniform3i(shader_location,v0,v1,v2);
+}
+
+void Shader::set_uniform_4i(const char *location,GLint v0,GLint v1,GLint v2,GLint v3) {
+    int shader_location = glGetUniformLocation(m_shader_id, location);
+    glUniform4i(shader_location,v0,v1,v2,v3);
+}
+
+
+void Shader::set_uniform_1ui(const char *location,GLuint v0) {
+    int shader_location = glGetUniformLocation(m_shader_id, location);
+    glUniform1ui(shader_location,v0);
+}
+
+void Shader::set_uniform_2ui(const char *location,GLuint v0,GLuint v1) {
+    int shader_location = glGetUniformLocation(m_shader_id, location);
+    glUniform2ui(shader_location,v0,v1);
+}
+
+void Shader::set_uniform_3ui(const char *location,GLuint v0,GLuint v1,GLuint v2) {
+    int shader_location = glGetUniformLocation(m_shader_id, location);
+    glUniform3ui(shader_location,v0,v1,v2);
+}
+
+void Shader::set_uniform_4ui(const char *location,GLuint v0,GLuint v1,GLuint v2,GLuint v3) {
+    int shader_location = glGetUniformLocation(m_shader_id, location);
+    glUniform4ui(shader_location,v0,v1,v2,v3);
 }
